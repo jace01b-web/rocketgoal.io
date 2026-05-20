@@ -1,12 +1,201 @@
-<html><head>
-  <style>body,html,iframe{margin:0;padding:0;height:100%;width:100%;overflow:hidden}.forceIosScrolling{overflow:scroll;-webkit-overflow-scrolling:touch}</style>
-<script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.en.gSqfLc8WnvU.O/m=gapi_rpc/rt=j/sv=1/d=1/ed=1/rs=AHpOoo_cXXGArE2dtw6vkGR2NQ_1f5L3AQ/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/js/api.js?checkCookie=1" gapi_processed="true"></script></head>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Inject enhanced premium styles with the classic energetic color scheme
+    const style = document.createElement('style');
+    style.textContent = `
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
 
-<body>
-<iframe id="userHtmlFrame" frameborder="0" scrolling="yes" style="overflow: auto;">
-</iframe>
+        .custom-notification {
+            position: fixed;
+            top: -160px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 380px;
+            max-width: 92vw;
+            background: rgba(22, 22, 35, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 
+                        0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+                        0 0 30px rgba(255, 78, 80, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            z-index: 999999;
+            transition: top 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+            opacity: 0;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .custom-notification.show {
+            top: 32px;
+            opacity: 1;
+        }
+        
+        .notification-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
 
-<script>function loadGapi(){var loaderScript=document.createElement('script');loaderScript.setAttribute('src','https://apis.google.com/js/api.js?checkCookie=1');loaderScript.onload=function(){this.onload=function(){};loadGapiClient();};loaderScript.onreadystatechange=function(){if(this.readyState==='complete'){this.onload();}};(document.head||document.body||document.documentElement).appendChild(loaderScript);}function updateUserHtmlFrame(userHtml,enableInteraction,forceIosScrolling){var frame=document.getElementById('userHtmlFrame');if(enableInteraction){if(forceIosScrolling){var iframeParent=frame.parentElement;iframeParent.classList.add('forceIosScrolling');}else{frame.style.overflow='auto';}}else{frame.setAttribute('scrolling','no');frame.style.pointerEvents='none';}clearCookies();clearStorage();frame.contentWindow.document.open();frame.contentWindow.document.write('<base target="_blank">'+userHtml);frame.contentWindow.document.close();}function onGapiInitialized(){gapi.rpc.call('..','innerFrameGapiInitialized');gapi.rpc.register('updateUserHtmlFrame',updateUserHtmlFrame);}function loadGapiClient(){gapi.load('gapi.rpc',onGapiInitialized);}if(document.readyState=='complete'){loadGapi();}else{self.addEventListener('load',loadGapi);}function clearCookies(){var cookies=document.cookie.split(";");for(var i=0;i<cookies.length;i++){var cookie=cookies[i];var equalPosition=cookie.indexOf("=");var name=equalPosition>-1?cookie.substr(0,equalPosition):cookie;document.cookie=name+"=;expires=Thu, 01 Jan 1970 00:00:00 GMT";document.cookie=name+"=;expires=Thu, 01 Jan 1970 00:00:01 GMT ;domain=.googleusercontent.com";}}function clearStorage(){try{localStorage.clear();sessionStorage.clear();}catch(e){}}</script>
+        .notification-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
 
+        .notification-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
 
-</body></html>
+        .notification-title {
+            font-size: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #ff4e50 0%, #f9d423 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .notification-text {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: #e2e2ee;
+            margin: 0;
+            padding: 0 10px;
+        }
+
+        .notification-btn {
+            background: linear-gradient(90deg, #ff4e50 0%, #f9d423 100%);
+            color: #0e0e15;
+            border: none;
+            padding: 10px 28px;
+            font-size: 12px;
+            font-weight: 800;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 6px 20px rgba(255, 78, 80, 0.4);
+            animation: pulseGlow 2s infinite;
+        }
+
+        .notification-btn:hover {
+            transform: scale(1.05) translateY(-1px);
+            box-shadow: 0 8px 25px rgba(255, 78, 80, 0.6);
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .notification-close:hover {
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 6px 16px rgba(255, 78, 80, 0.4); }
+            50% { box-shadow: 0 6px 26px rgba(255, 78, 80, 0.7); }
+            100% { box-shadow: 0 6px 16px rgba(255, 78, 80, 0.4); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Create revitalized notification element
+    const notification = document.createElement('div');
+    notification.className = 'custom-notification';
+    notification.innerHTML = `
+        <div class="notification-header">
+            <img class="notification-icon" src="https://www2.minijuegosgratis.com/v3/games/thumbnails/253635_1.jpg" alt="GD Wave Icon">
+            <div class="notification-content">
+                <h4 class="notification-title">New Website Alert!</h4>
+                <p class="notification-text">Tap play to experience the brand new GD Wave now!</p>
+            </div>
+        </div>
+        <button class="notification-btn">
+            Play Now
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+                <path d="M2.5 1.5L8.5 5L2.5 8.5V1.5Z"/>
+            </svg>
+        </button>
+        <button class="notification-close" aria-label="Dismiss alert">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    `;
+    document.body.appendChild(notification);
+
+    // Navigation function
+    const navigate = (e) => {
+        // Prevent action if clicking the close icon
+        if (e.target.closest('.notification-close')) return;
+        window.open('https://044.netlify.app', '_blank');
+    };
+
+    notification.addEventListener('click', navigate);
+
+    let autoHideTimeout;
+
+    // Display state controls
+    const showNotification = () => {
+        notification.classList.add('show');
+        autoHideTimeout = setTimeout(hideNotification, 7000);
+    };
+
+    const hideNotification = () => {
+        notification.classList.remove('show');
+        clearTimeout(autoHideTimeout);
+        scheduleNext();
+    };
+
+    // Close listener logic
+    const closeBtn = notification.querySelector('.notification-close');
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Avoid triggering full-body navigation click
+        hideNotification();
+    });
+
+    // Loop interval logic (15s to 120s)
+    const scheduleNext = () => {
+        const randomTime = Math.floor(Math.random() * (120000 - 15000 + 1)) + 15000;
+        setTimeout(showNotification, randomTime);
+    };
+
+    // Initial appearance after 1.25s
+    setTimeout(showNotification, 1250);
+});
+</script>
